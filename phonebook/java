@@ -1,0 +1,43 @@
+import java.util.*;
+
+public class PhoneBook {
+    // HashMap для хранения телефонной книги
+    private HashMap<String, HashSet<String>> phoneBook = new HashMap<>();
+
+    // Метод для добавления номера телефона
+    public void addPhoneNumber(String name, String phoneNumber) {
+        // Если имя уже существует, добавляем номер в существующий HashSet
+        if (phoneBook.containsKey(name)) {
+            phoneBook.get(name).add(phoneNumber);
+        } else {
+            // Если имя не существует, создаем новый HashSet и добавляем номер
+            HashSet<String> numbers = new HashSet<>();
+            numbers.add(phoneNumber);
+            phoneBook.put(name, numbers);
+        }
+    }
+
+    public List<Map.Entry<String, HashSet<String>>> getSortedPhoneBook() {
+        List<Map.Entry<String, HashSet<String>>> sortedList = new ArrayList<>(phoneBook.entrySet());
+        
+        sortedList.sort((entry1, entry2) -> Integer.compare(entry2.getValue().size(), entry1.getValue().size()));
+        
+        return sortedList;
+    }
+
+    public static void main(String[] args) {
+        PhoneBook phoneBook = new PhoneBook();
+
+        phoneBook.addPhoneNumber("Alice", "123-456-789");
+        phoneBook.addPhoneNumber("Bob", "987-654-321");
+        phoneBook.addPhoneNumber("Alice", "555-555-555");
+        phoneBook.addPhoneNumber("Charlie", "222-333-444");
+        phoneBook.addPhoneNumber("Bob", "444-555-666");
+        phoneBook.addPhoneNumber("Alice", "111-222-333");
+
+        List<Map.Entry<String, HashSet<String>>> sortedPhoneBook = phoneBook.getSortedPhoneBook();
+        for (Map.Entry<String, HashSet<String>> entry : sortedPhoneBook) {
+            System.out.println(entry.getKey() + ": " + entry.getValue());
+        }
+    }
+}
